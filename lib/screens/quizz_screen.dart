@@ -5,6 +5,7 @@ import 'package:quiz_ui/screens/result_screen.dart';
 
 class QuizzScreen extends StatefulWidget {
   const QuizzScreen({Key? key}) : super(key: key);
+  
 
   @override
   _QuizzScreenState createState() => _QuizzScreenState();
@@ -13,6 +14,11 @@ class QuizzScreen extends StatefulWidget {
 class _QuizzScreenState extends State<QuizzScreen> {
 
 double _initial=0.0;
+double  _initial1=0.0;
+bool condition=false;
+
+  
+
 
  
  Widget _stepIndicator(){
@@ -23,9 +29,28 @@ double _initial=0.0;
      
      LinearProgressIndicator(
        minHeight: 25.0,
-       valueColor: AlwaysStoppedAnimation(Colors.green),
+       valueColor: AlwaysStoppedAnimation(Colors.blueGrey),
        value: _initial,
        backgroundColor: Colors.white,
+     ),
+    
+    ],);
+
+ }
+
+ Widget _step2Indicator(){
+   return Column
+   (
+     children: 
+   [
+     
+     LinearProgressIndicator(
+       
+       minHeight: 25.0,
+       valueColor: AlwaysStoppedAnimation(Colors.blueGrey),
+       value: _initial1,
+       backgroundColor: Colors.white,
+       
      ),
     
     ],);
@@ -69,11 +94,13 @@ double _initial=0.0;
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
+              
                 children: [
+                  _stepIndicator(),
                   SizedBox(
                     width: double.infinity,
                     child: Text(
-                      "Question ${index + 1}/10",
+                      "Question ${index + 1}/20",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
@@ -85,9 +112,10 @@ double _initial=0.0;
                         color: Colors.white,),),
                         RatingBar.builder
                       (
-                        initialRating: 0,
-                        itemCount: 5,
+                        initialRating:2,
+                        itemCount: 3,
                         itemSize: 28,
+                        ignoreGestures: true,
                         unratedColor: Colors.white,
                   
                         itemBuilder: (context, _)=> Icon(Icons.star,color: Colors.yellowAccent,),
@@ -113,7 +141,7 @@ double _initial=0.0;
                   for (int i = 0; i < questions[index].answers!.length; i++)
                     Container(
                       width: double.infinity,
-                      height: 35.0,
+                      height: 30.0,
                       margin: EdgeInsets.only(
                           bottom: 20.0, left: 12.0, right: 12.0),
                       child: RawMaterialButton(
@@ -122,8 +150,8 @@ double _initial=0.0;
                         ),
                         fillColor: btnPressed
                             ? questions[index].answers!.values.toList()[i]
-                                ? Colors.white
-                                : Colors.white
+                                ? Colors.green
+                                : Colors.red
                                 : Colors.white,
                         onPressed: !answered
                             ? () {
@@ -150,7 +178,7 @@ double _initial=0.0;
                       ),
                     ),
                   SizedBox(
-                    height: 3.0,
+                    height: 0.0,
                   ),
                   RawMaterialButton(
                     onPressed: () {
@@ -166,22 +194,49 @@ double _initial=0.0;
 
                         setState(() {
                           btnPressed = false;
-                           _initial=_initial+0.12;
+                           _initial=_initial+0.053;
+                           
+                           if(score.isOdd)
+                           {
+                            _initial1=_initial1+0.053;
+                             Text("${score}");
+                           }
+                           else
+                           {
+                            _initial1=_initial1--;
+                             
+                           };
+                          
                         });
                       }
                     },
                     shape: StadiumBorder(),
-                    fillColor: Colors.red,
-                    padding: EdgeInsets.all(18.0),
+                    fillColor: Colors.grey,
+                    padding: EdgeInsets.all(18.8),
                     elevation: 0.0,
                     child: Text(
                       btnText,
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 15),
                     ),
                       
                   ),
-                  SizedBox(height: 25,),
-                  _stepIndicator(),
+                  SizedBox(height: 5,),
+                  Row(children: [
+                    
+                    Text("score: ${score}",style: TextStyle
+                  (color: Colors.white,fontSize: 20.0,),),
+                  SizedBox(width: 60.0,),
+                  Text("max score: ${score/1}%",style: TextStyle
+                  (color: Colors.white,fontSize: 20.0,),),
+                    
+                  ],
+                    
+                  ),
+                    
+                  
+                  
+                  SizedBox(height: 20,),
+                  _step2Indicator()
                 ],
               );
             },

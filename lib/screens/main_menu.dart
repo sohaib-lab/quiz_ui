@@ -65,7 +65,7 @@ class _MainMenuState extends State<MainMenu> {
             ),
             const Center(
               child: Text(
-                "There are 10 Questions",
+                "There are 20 Questions",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
